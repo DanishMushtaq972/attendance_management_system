@@ -1,0 +1,63 @@
+Route::prefix('admin')->group(function () {
+    // Admin Login
+    Route::get('/login', [AdminAuthController::class,'showLoginForm'])->name('admin.loginForm');
+    Route::post('/login', [AdminAuthController::class,'login'])->name('admin.login');
+    Route::post('/logout', [AdminAuthController::class,'logout'])->name('admin.logout');
+
+    // Admin Dashboard
+    Route::middleware(['auth:admin'])->group(function () {
+        Route::get('/dashboard', [AdminPanelController::class,'dashboard'])->name('admin.dashboard');
+        // Other admin routes here
+    });
+});
+
+
+
+
+Route::get('/admin/dashboard',[ AdminController::class,'dashboard'])->name('admin.dashboard');
+
+        // View Students
+        Route::get('/admin/students', [AdminController::class,'viewStudent'])->name('admin.viewStudents');
+
+        // View Student Attendance
+        Route::get('/admin/students/{id}/attendance', [AdminController::class,'viewStudentAttendance'])->name('admin.viewStudentAttendance');
+
+        // Edit Attendance
+        Route::get('/admin/attendance/{id}/edit', [AdminController::class,'editAttendance'])->name('admin.editAttendance');
+        Route::post('/admin/attendance/{id}/edit', [AdminController::class,'updateAttendance'])->name('admin.updateAttendance');
+
+        // Delete Attendance
+        Route::get('/admin/attendance/{id}/delete', [AdminController::class,'deleteAttendance'])->name('admin.deleteAttendance');
+
+        // Create Report
+        Route::get('/admin/report', [AdminController::class,'createReport'])->name('admin.createReport');
+        Route::post('/admin/report', [AdminController::class,'generateReport'])->name('admin.generateReport');
+
+        // Leave Approvals
+        Route::get('/admin/leave-approvals', [AdminController::class,'leaveApprovals'])->name('admin.leaveApprovals');
+        Route::get('/admin/leave-approvals/{id}/approve',[AdminController::class,'approveLeave'])->name('admin.approveLeave');
+        Route::get('/admin/leave-approvals/{id}/reject', [AdminController::class,'rejectLeave'])->name('admin.rejectLeave');
+
+        // System Report
+        Route::get('/admin/system-report', [AdminController::class,'createSystemReport'])->name('admin.createSystemReport');
+        Route::post('/admin/system-report', [AdminController::class,'generateSystemReport'])->name('admin.generateSystemReport');
+
+        // Grading System
+        Route::get('/admin/grading-system', [AdminController::class,'gradingSystem'])->name('admin.gradingSystem');
+        Route::post('/admin/grading-system', [AdminController::class,'updateGradingSystem'])->name('admin.updateGradingSystem');
+    });
+
+    
+Route::middleware('auth')->group(function () {
+    // User Panel Routes
+    Route::get('/mark-attendance',[UserPanelController::class,'markAttendance']);
+    Route::post('/mark-attendance', [UserPanelController::class,'storeAttendance']);
+
+    Route::get('/view-attendance', [UserPanelController::class,'viewAttendance']);
+
+    Route::get('/edit-profile-picture', [UserPanelController::class,'editProfilePicture']);
+    Route::post('/edit-profile-picture', [UserPanelController::class,'updateProfilePicture']);
+
+    Route::get('/mark-leave', [UserPanelController::class,'markLeave']);
+    Route::post('/mark-leave', [UserPanelController::class,'storeLeave']);
+});
